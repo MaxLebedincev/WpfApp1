@@ -20,7 +20,7 @@ namespace WpfApp1
         private (int x, int y) Player { get; set; }
         private (double x, double y) Border { get; set; }
 
-        private int[][] Map { get; set; } 
+        private int[][] Map { get; set; }
 
         public MainWindow()
         {
@@ -37,6 +37,7 @@ namespace WpfApp1
             var startPointPlayer = str.First().Split().Select(int.Parse).ToArray();
             Player = (startPointPlayer[0], startPointPlayer[1]);
 
+            //var lengthX = str.Max(s => s.Split().Select(int.Parse).Count());
             Map = new int[str.Length - 1][];
             var temp = 0;
             foreach (var line in str.Skip(1))
@@ -56,7 +57,7 @@ namespace WpfApp1
             {
                 for (int j = 1; j < Map.Length + 1; j++)
                 {
-                    canvas.Children.Add(CustomRectangle(i * SizeCell, j * SizeCell, SizeCell, SizeCell, Brushes.Black, Map[i - 1][j - 1]));
+                    canvas.Children.Add(CustomRectangle(j * SizeCell, i * SizeCell, SizeCell, SizeCell, Brushes.Black, Map[i - 1][j - 1]));
                 }
             }
 
@@ -69,14 +70,14 @@ namespace WpfApp1
 
             Player = e.Key switch
             {
-                Key.Right => (Map[Player.x + 1][Player.y] == 1 ? Player.x : Player.x + 1 , Player.y),
-                Key.Left => (Map[Player.x - 1][Player.y] == 1 ? Player.x : Player.x - 1, Player.y),
-                Key.Up => (Player.x, Map[Player.x][Player.y - 1] == 1 ? Player.y : Player.y - 1),
-                Key.Down => (Player.x, Map[Player.x][Player.y + 1] == 1 ? Player.y : Player.y + 1),
+                Key.Right => (Map[Player.y][Player.x + 1] == 1 ? Player.x : Player.x + 1 , Player.y),
+                Key.Left => (Map[Player.y][Player.x - 1] == 1 ? Player.x : Player.x - 1, Player.y),
+                Key.Up => (Player.x, Map[Player.y - 1][Player.x] == 1 ? Player.y : Player.y - 1),
+                Key.Down => (Player.x, Map[Player.y + 1][Player.x] == 1 ? Player.y : Player.y + 1),
                 _ => (Player.x, Player.y),
             };
 
-            if (Map[Player.x][Player.y] == 3)
+            if (Map[Player.y][Player.x] == 3)
             {
                 MessageBox.Show("Вы победили!");
             }
