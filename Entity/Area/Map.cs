@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.ObjectModel;
+using System.IO;
 using WpfApp1.Entity.Area.Cells;
 
 namespace WpfApp1.Entity.Area
@@ -11,9 +12,19 @@ namespace WpfApp1.Entity.Area
         private readonly string _levelsFolder;
 
         /// <summary>
+        /// Список уровней.
+        /// </summary>
+        private readonly string[] _levelFiles = [];
+
+        /// <summary>
+        /// Текущий уровень.
+        /// </summary>
+        public int currentLevel = 0;
+
+        /// <summary>
         /// Ячейки поля.
         /// </summary>
-        public BaseCell[,] Cells {  get; set; }
+        public BaseCell[,] Cells { get; set; } = new DefaultCell[0,0];
 
         /// <summary>
         /// Размеры поля
@@ -32,28 +43,94 @@ namespace WpfApp1.Entity.Area
         {
             _levelsFolder = levelsFolder;
 
-            var str = File.ReadAllLines($"{_levelsFolder}level_1.txt");
+            if (Directory.Exists(_levelsFolder))
+            {
+                _levelFiles = Directory.GetFiles(_levelsFolder);
+            }
 
-            var startPlayerPosition = str.First().Split().Select(int.Parse).ToArray();
-            var Player = new PlayerCell(startPlayerPosition[0], startPlayerPosition[1]);
-            Players.Add(Player);
+            LoadLevel();
+        }
 
-            var mapPosition = str.Skip(1).ToArray();
+        /// <summary>
+        /// Загрузка уровня.
+        /// </summary>
+        /// <returns>Есть ли следующий уровень для загрузки.</returns>
+        public bool NextLevel()
+        {
+            var result = currentLevel + 1 < _levelFiles.Length;
 
-            var maxWidth = mapPosition.Select(s => s.Split().Length).ToArray().Max();
-            var maxHeight = mapPosition.Length;
+            if (result)
+            {
+                ++currentLevel;
+                LoadLevel();
+            }
+            else
+            {
+                currentLevel = 0;
+                LoadLevel();
+            }
 
-            Cells = new DefaultCell[maxWidth, maxHeight];
-            Size = (maxWidth, maxHeight);
+            return result;
+        }
 
-            for (var heightPointCounter = 0; heightPointCounter < maxHeight; heightPointCounter++)
+        private static (int x, int y) GetMaxPositions(string[] pos) => (pos.Select(s => s.Split().Length).ToArray().Max(), pos.Length);
+
+        /// <summary>
+        /// Загрузка уровня.
+        /// </summary>
+        private void LoadLevel()
+        {
+            var allLines = File.ReadAllLines(_levelFiles[currentLevel]);
+
+            var startPlayerPosition = allLines.First().Split().Select(int.Parse).ToArray();
+
+            LoadPlayers(startPlayerPosition);
+
+            var mapPosition = allLines.Skip(1).ToArray();
+
+            Size = GetMaxPositions(mapPosition);
+            Cells = new DefaultCell[Size.x, Size.y];
+
+            LoadCells(mapPosition); ;
+        }
+
+        /// <summary>
+        /// Загрузка играков.
+        /// </summary>
+        /// <param name="startPlayerPosition">Позиции играков.</param>
+        private void LoadPlayers(int[] startPlayerPosition)
+        {
+            if (Players.Count() > 0)
+            {
+                for (var playerCounter = 0; playerCounter < startPlayerPosition.Length / 2; playerCounter++)
+                {
+                    Players[playerCounter].Location = (startPlayerPosition[0], startPlayerPosition[1]);
+                }
+            }
+            else
+            {
+                for (var playerCounter = 0; playerCounter < startPlayerPosition.Length / 2; playerCounter++)
+                {
+                    var Player = new PlayerCell(startPlayerPosition[0], startPlayerPosition[1]);
+                    Players.Add(Player);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Загрузка ячеек.
+        /// </summary>
+        /// <param name="mapPosition">Позиции.</param>
+        private void LoadCells(string[] mapPosition)
+        {
+            for (var heightPointCounter = 0; heightPointCounter < Size.y; heightPointCounter++)
             {
                 var WidthPoints = mapPosition[heightPointCounter].Split().Select(int.Parse).ToArray();
 
                 for (var widthPointsCounter = 0; widthPointsCounter < WidthPoints.Length; widthPointsCounter++)
                 {
-                    Cells[widthPointsCounter, heightPointCounter] = new DefaultCell() 
-                    { 
+                    Cells[widthPointsCounter, heightPointCounter] = new DefaultCell()
+                    {
                         Type = (CellType)WidthPoints[widthPointsCounter]
                     };
                 }

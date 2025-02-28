@@ -18,21 +18,20 @@ namespace WpfApp1
             
             Map = new Map("Levels\\");
 
-            Map.RenderMap(canvas);
+            GraphicsHandler.RenderMap(Map, canvas);
 
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            Map.Down(e.Key);
+            Handlers.EventHandler.Move(Map, e.Key);
 
-            Map.RenderMap(canvas);
+            GraphicsHandler.RenderMap(Map, canvas);
 
-
-            //if (Map[Player.x, Player.y] == 3)
-            //{
-            //    MessageBox.Show("Вы победили!");
-            //}
+            if (Handlers.EventHandler.CellConditions(Map))
+            {
+                GraphicsHandler.RenderMap(Map, canvas);
+            }
         }
     }
 }

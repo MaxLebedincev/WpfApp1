@@ -20,7 +20,9 @@ namespace WpfApp1.Handlers
         /// <summary>
         /// Отрисовать карту.
         /// </summary>
-        public static void RenderMap(this Map map, Canvas canvas)
+        /// <param name="map">Объект карты.</param>
+        /// <param name="canvas">Объект для записи элементов.</param>
+        public static void RenderMap(Map map, Canvas canvas)
         {
             canvas.Children.Clear();
 
@@ -34,10 +36,10 @@ namespace WpfApp1.Handlers
                 }
             }
 
-            map.Players.ForEach(player => 
+            foreach (var player in map.Players)
             {
                 canvas.Children.Add(RenderCell(player.Location.x * SizeCell, player.Location.y * SizeCell, player.Color));
-            });
+            }
         }
 
         /// <summary>
@@ -53,14 +55,14 @@ namespace WpfApp1.Handlers
             {
                 Stroke = Brushes.Black,
                 Fill = color,
-                Points = new()
-                {
+                Points =
+                [
                     new Point(x, y),
                     new Point(x + SizeCell, y),
                     new Point(x + SizeCell, y + SizeCell),
                     new Point(x, y + SizeCell),
                     new Point(x, y)
-                }
+                ]
             };
         }
     }
