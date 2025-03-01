@@ -30,9 +30,9 @@ namespace WpfApp1.Handlers
             {
                 for (int j = 0; j < map.Size.y; j++)
                 {
-                    var color = map.Cells[i, j]?.GetColor() ?? Brushes.White;
+                    var color = map.Cells[i, j]?.GetColor();
 
-                    canvas.Children.Add(RenderCell(i * SizeCell, j * SizeCell, color));
+                    if (color != null) canvas.Children.Add(RenderCell(i * SizeCell, j * SizeCell, color));
                 }
             }
 

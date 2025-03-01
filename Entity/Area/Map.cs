@@ -1,6 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.IO;
 using WpfApp1.Entity.Area.Cells;
+using WpfApp1.Entity.Area.Cells.Player;
+using WpfApp1.Entity.Area.Cells.Player.Interface;
+using WpfApp1.Entity.Area.Cells.Player.MoveKeys;
 
 namespace WpfApp1.Entity.Area
 {
@@ -34,7 +37,7 @@ namespace WpfApp1.Entity.Area
         /// <summary>
         /// Список игроков
         /// </summary>
-        public readonly List<PlayerCell> Players = [];
+        public readonly PlayerCell[] Players = new PlayerCell[2];
 
         /// <summary>
         /// Создает карту из загруженных файлов.
@@ -100,19 +103,20 @@ namespace WpfApp1.Entity.Area
         /// <param name="startPlayerPosition">Позиции играков.</param>
         private void LoadPlayers(int[] startPlayerPosition)
         {
-            if (Players.Count() > 0)
+            if (Players.Any(p => p != null))
             {
                 for (var playerCounter = 0; playerCounter < startPlayerPosition.Length / 2; playerCounter++)
                 {
-                    Players[playerCounter].Location = (startPlayerPosition[0], startPlayerPosition[1]);
+                    var playerPosition = playerCounter * 2;
+                    Players[playerCounter].Location = (startPlayerPosition[playerPosition], startPlayerPosition[playerPosition + 1]);
                 }
             }
             else
             {
                 for (var playerCounter = 0; playerCounter < startPlayerPosition.Length / 2; playerCounter++)
                 {
-                    var Player = new PlayerCell(startPlayerPosition[0], startPlayerPosition[1]);
-                    Players.Add(Player);
+                    var playerPosition = playerCounter * 2;
+                    Players[playerCounter] = new PlayerCell(startPlayerPosition[playerPosition], startPlayerPosition[playerPosition + 1], PlayerTools.MoveKeys[playerCounter]);
                 }
             }
         }
