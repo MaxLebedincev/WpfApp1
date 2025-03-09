@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace WpfApp1.Entity.Area.Cells.Player.Interface
+namespace WpfApp1.CellGameEngine.AreaMapper.Cells.Dynamic.PlayerCell.Interface
 {
-    internal interface IMove
+    internal interface IMovement
     {
         public Key Up { get; }
         public Key Down { get; }

@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
-using WpfApp1.Entity.Area;
-using WpfApp1.Handlers;
+using WpfApp1.CellGameEngine;
+using WpfApp1.CellGameEngine.AreaMapper;
 
 namespace WpfApp1
 {
@@ -10,28 +10,23 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Map Map { get; set; }
+        private Processor _processor { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
-            
-            Map = new Map("Levels\\");
 
-            GraphicsHandler.RenderMap(Map, canvas);
+            _processor = new Processor(
+                new Mapper("Levels\\"), 
+                new Renderer(canvas)
+            );
 
+            _processor.Load();
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            Handlers.EventHandler.Move(Map, e.Key);
-
-            GraphicsHandler.RenderMap(Map, canvas);
-
-            if (Handlers.EventHandler.CellConditions(Map))
-            {
-                GraphicsHandler.RenderMap(Map, canvas);
-            }
+            _processor.Execute(e.Key);
         }
     }
 }

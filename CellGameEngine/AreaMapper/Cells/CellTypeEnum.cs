@@ -1,9 +1,9 @@
-﻿namespace WpfApp1.Entity.Area
+﻿namespace WpfApp1.CellGameEngine.AreaMapper.Cells
 {
     /// <summary>
     /// Тип ячеек.
     /// </summary>
-    internal enum CellType
+    internal enum CellTypeEnum
     {
         None = 0,
         Wall = 1,

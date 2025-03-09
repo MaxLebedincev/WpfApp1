@@ -1,13 +1,12 @@
-﻿using System.Windows.Media;
-using WpfApp1.Entity.Area.Cells.Player.Interface;
-using WpfApp1.Entity.Area.Cells.Player.MoveKeys;
+﻿using System.Text.Json.Serialization;
+using System.Windows.Input;
+using System.Windows.Media;
+using WpfApp1.CellGameEngine.AreaMapper.Cells.Base;
 
-namespace WpfApp1.Entity.Area.Cells
+namespace WpfApp1.CellGameEngine.AreaMapper.Cells.Dynamic
 {
-    internal class PlayerCell : BaseCell
+    internal class DynamicCell : BaseCell
     {
-        public IMove MoveKeys { get; private set; }
-
         /// <summary>
         /// УИД игрока.
         /// </summary>
@@ -16,31 +15,26 @@ namespace WpfApp1.Entity.Area.Cells
         /// <summary>
         /// Расположение ячейки игрока.
         /// </summary>
-        public (int x, int y) Location { get; set; }
+        public Position Location { get; set; }
 
         /// <summary>
         /// Цвет игрока.
         /// </summary>
         public SolidColorBrush Color { get; set; }
         public override SolidColorBrush GetColor() => Color;
-        public PlayerCell(int x, int y)
+
+        public DynamicCell(int x, int y)
         {
-            Location = (x, y);
-            MoveKeys = new ArrowKeys();
+            Location = new() { X = x, Y = y };
 
             var bytes = new byte[3];
             new Random().NextBytes(bytes);
             Color = new SolidColorBrush(System.Windows.Media.Color.FromRgb(bytes[0], bytes[1], bytes[2]));
         }
 
-        public PlayerCell(int x, int y, SolidColorBrush color) : this(x, y)
+        public DynamicCell(int x, int y, SolidColorBrush color) : this(x, y)
         {
             Color = color;
-        }
-
-        public PlayerCell(int x, int y, IMove Keys) : this(x, y)
-        {
-            MoveKeys = Keys;
         }
     }
 }

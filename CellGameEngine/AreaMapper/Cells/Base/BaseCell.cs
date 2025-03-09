@@ -1,6 +1,8 @@
-﻿using System.Windows.Media;
+﻿using System.Text.Json.Serialization;
+using System.Windows.Media;
+using WpfApp1.CellGameEngine.AreaMapper.Cells;
 
-namespace WpfApp1.Entity.Area.Cells
+namespace WpfApp1.CellGameEngine.AreaMapper.Cells.Base
 {
     /// <summary>
     /// Базовая ячейка.
@@ -10,7 +12,8 @@ namespace WpfApp1.Entity.Area.Cells
         /// <summary>
         /// Тип ячейки.
         /// </summary>
-        public CellType Type { get; set; }
+        [JsonIgnore]
+        public CellTypeEnum Type { get; set; }
 
         /// <summary>
         /// Получение цвета ячейки.
