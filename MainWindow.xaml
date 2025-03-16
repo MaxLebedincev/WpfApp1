@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" KeyDown="Window_KeyDown">
-    <Canvas x:Name="canvas">
+    <Canvas x:Name="canvas" MouseDown="canvas_MouseDown">
         
     </Canvas>
 </Window>

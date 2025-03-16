@@ -68,13 +68,13 @@ namespace WpfApp1.CellGameEngine
             Stroke = Brushes.Black,
             Fill = color,
             Points =
-                [
-                    new Point(x, y),
-                    new Point(x + SizeCell, y),
-                    new Point(x + SizeCell, y + SizeCell),
-                    new Point(x, y + SizeCell),
-                    new Point(x, y)
-                ]
+            [
+                new Point(x, y),
+                new Point(x + SizeCell, y),
+                new Point(x + SizeCell, y + SizeCell),
+                new Point(x, y + SizeCell),
+                new Point(x, y)
+            ]
         };
 
         /// <summary>
@@ -90,13 +90,13 @@ namespace WpfApp1.CellGameEngine
             Stroke = Brushes.Black,
             Fill = color,
             Points =
-                [
-                    new Point(0, 0),
-                    new Point(x, 0),
-                    new Point(x, y),
-                    new Point(0, y),
-                    new Point(0, 0)
-                ]
+            [
+                new Point(0, 0),
+                new Point(x, 0),
+                new Point(x, y),
+                new Point(0, y),
+                new Point(0, 0)
+            ]
         };
     }
 }
