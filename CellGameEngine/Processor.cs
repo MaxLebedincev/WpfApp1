@@ -15,11 +15,11 @@ namespace WpfApp1.CellGameEngine
     {
         private readonly Mapper _mapper;
 
-        private readonly Renderer _renderer;
+        private readonly RendererBase _renderer;
 
         private bool _isPause = false;
 
-        public Processor(Mapper mapper, Renderer renderer)
+        public Processor(Mapper mapper, RendererBase renderer)
         {
             _mapper = mapper;
             _renderer = renderer;

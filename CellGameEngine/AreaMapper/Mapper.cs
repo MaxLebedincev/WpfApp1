@@ -65,6 +65,10 @@ namespace WpfApp1.CellGameEngine.AreaMapper
             LoadLevel();
         }
 
+        public Mapper()
+        {
+        }
+
         /// <summary>
         /// Загрузка уровня.
         /// </summary>

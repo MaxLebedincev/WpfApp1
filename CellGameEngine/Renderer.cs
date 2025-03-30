@@ -9,14 +9,9 @@ namespace WpfApp1.CellGameEngine
     /// <summary>
     /// Графический обработчик. 
     /// </summary>
-    internal class Renderer
+    internal class Renderer : RendererBase, IRenderGraphicBase
     {
-        private readonly Canvas _canvas;
-
-        public Renderer(Canvas canvas) 
-        {
-            _canvas = canvas;
-        }
+        public Renderer(Canvas canvas) : base(canvas) { }
 
         /// <summary>
         /// Размер ячейки.
@@ -28,7 +23,7 @@ namespace WpfApp1.CellGameEngine
         /// </summary>
         /// <param name="map">Объект карты.</param>
         /// <param name="canvas">Объект для записи элементов.</param>
-        public void RenderMap(Mapper map)
+        public override void RenderMap(Mapper map)
         {
             _canvas.Children.Clear();
 
@@ -48,7 +43,7 @@ namespace WpfApp1.CellGameEngine
             }
         }
 
-        public void RenderPause(Mapper map)
+        public override void RenderPause(Mapper map)
         {
             var color = new SolidColorBrush(Color.FromArgb(125, 0, 0, 0));
             
@@ -62,7 +57,7 @@ namespace WpfApp1.CellGameEngine
         /// <param name="y">Высота от 0.</param>
         /// <param name="color">Цвет ячейки.</param>
         /// <returns>Ячейка для рендера.</returns>
-        private Polyline RenderCell(int x, int y, SolidColorBrush color) => new()
+        public Polyline RenderCell(int x, int y, SolidColorBrush color) => new()
         {
 
             Stroke = Brushes.Black,
@@ -84,7 +79,7 @@ namespace WpfApp1.CellGameEngine
         /// <param name="y">Высота.</param>
         /// <param name="color">Цвет.</param>
         /// <returns>Область для рендера.</returns>
-        private Polyline RenderArea(int x, int y, SolidColorBrush color) => new()
+        public Polyline RenderArea(int x, int y, SolidColorBrush color) => new()
         {
 
             Stroke = Brushes.Black,
